@@ -32,6 +32,7 @@ def run_scanner(base_url):
 def start_scan():
     url = url_entry.get()
     if not url:
+        
         messagebox.showerror("Error", "Please enter a URL")
         return
     results = run_scanner(url)
