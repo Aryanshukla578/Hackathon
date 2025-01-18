@@ -193,6 +193,7 @@
 <body>
     <div class="sidebar" id="sidebar">
         <h1>Vulnerability Scanner</h1>
+        <script src="backend.js"></script>
         <i class="fas fa-bars hamburger" id="hamburger"></i>
         <ul>
             <li><a href="#" id="homeButton"><i class="fas fa-home"></i> Home</a></li>
@@ -232,7 +233,7 @@
                 </div>
                 <button type="submit">Start Scan</button>
             </form>
-            <div class="results" id="results">
+            <div class="results" id="results" style="margin-left: 250px;"></div>
                 <!-- Scan results will appear here -->
             </div>
         </div>
@@ -261,6 +262,7 @@
                 <button type="submit">Send Message</button>
             </form>
         </div>
+    </div id="contactContent" class="hidden">
     </main>
     <footer>
         <p>&copy; 2024 Vulnerability Scanner. All rights reserved.</p>
