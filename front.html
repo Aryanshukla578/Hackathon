@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Scanner</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1a1a2e;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar h1 {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.2em;
+            display: block;
+            padding: 10px 0;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #0f3460;
+        }
+
+        .sidebar ul li i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li .dropdown {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: #0f3460;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .sidebar ul li:hover .dropdown {
+            display: block;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: white;
+            margin: 10px;
+        }
+
+        main {
+            margin-left: 250;
+            padding: 20;
+            flex: 1;
+            transition: margin-left 0.3s;
+        }
+
+        main.collapsed {
+            margin-left: 80px;
+        }
+
+        header {
+            background-color: #1a1a2e;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        form {
+            max-width: 600px;
+            margin: auto;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #1a1a2e;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0f3460;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        section {
+            margin-top: 40px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            main {
+                margin-left: 0;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h1>Vulnerability Scanner</h1>
+        <i class="fas fa-bars hamburger" id="hamburger"></i>
+        <ul>
+            <li><a href="#" id="homeButton"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#scan"><i class="fas fa-search"></i> Scan</a></li>
+            <li><a href="#" id="aboutButton"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#" id="contactButton"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+    <main id="mainContent">
+        <header>
+            <h1>Welcome to Vulnerability Scanner</h1>
+        </header>
+
+        <div id="homeContent">
+            <h2 id="scan">Scan Your Website</h2>
+            <form id="scannerForm">
+                <div>
+                    <label for="url">Website URL:</label>
+                    <input type="url" id="url" name="url" placeholder="https://example.com" required>
+                </div>
+                <div>
+                    <label for="scanType">Scan Type:</label>
+                    <select id="scanType" name="scanType" required>
+                        <option value="quick">Quick Scan</option>
+                        <option value="quickplus">Quick Scan Plus</option>
+                        <option value="quickroute">Quick Traceroute</option>
+                        <option value="regular">Regular Scan</option>
+                        <option value="slow">Slow Comprehensive Scan</option>
+                        <option value="detailed">Detailed Scan</option>
+                        <option value="custom">Custom Scan</option>
+                        <option value="ping">Ping Scan</option>
+                        <option value="intense">Intense Scan</option>
+                        <option value="intenseUDP">Intense Scan Plus UDP</option>
+                        <option value="intenseAll">Intense Scan, All TCP Ports</option>
+                        <option value="intenseNoPing">Intense Scan, No Ping</option>
+                    </select>
+                </div>
+                <button type="submit">Start Scan</button>
+            </form>
+            <div class="results" id="results">
+                <!-- Scan results will appear here -->
+            </div>
+        </div>
+
+        <div id="aboutContent" class="hidden">
+            <h2>About Vulnerability Scanner</h2>
+            <p>The Vulnerability Scanner is a tool designed to help you identify potential security weaknesses in your website. By using different scan types, you can quickly detect vulnerabilities like SQL Injection, XSS, and more. This tool is user-friendly and ensures your website's safety.</p>
+        </div>
+
+        <div id="contactContent" class="hidden">
+            <h2>Contact Us</h2>
+            <p>Have questions or need support? Reach out to us!</p>
+            <form id="contactForm">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Vulnerability Scanner. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById('scannerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const url = document.getElementById('url').value;
+            const scanType = document.getElementById('scanType').value;
+            const resultsDiv = document.getElementById('results');
+
+            resultsDiv.innerHTML = '<p>Scanning ' + url + ' with ' + scanType + '...</p>';
+
+            
+            setTimeout(() => {
+                const mockResults = `
+                    <h3>Scan Results</h3>
+                    <p><strong>URL:</strong> ${url}</p>
+                    <p><strong>Scan Type:</strong> ${scanType}</p>
+                    <p><strong>Status:</strong> No critical vulnerabilities found!</p>
+                `;
+                resultsDiv.innerHTML = mockResults;
+            }, 3000);
+        });
+
+        
+        const links = document.querySelectorAll('.sidebar ul li a');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                links.forEach(item => item.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        
+        const aboutButton = document.getElementById('aboutButton');
+        const contactButton = document.getElementById('contactButton');
+        const homeButton = document.getElementById('homeButton');
+        const homeContent = document.getElementById('homeContent');
+        const aboutContent = document.getElementById('aboutContent');
+        const contactContent = document.getElementById('contactContent');
+
+        aboutButton.addEventListener('click', () => {
+            homeContent.classList.add('hidden');
+            contactContent.classList.add('hidden');
+            aboutContent.classList.remove('hidden');
+        });
+
+        contactButton.addEventListener('click', () => {
+            homeContent.classList.add('hidden');
+            aboutContent.classList.add('hidden');
+            contactContent.classList.remove('hidden');
+        });
+
+        homeButton.addEventListener('click', () => {
+            aboutContent.classList.add('hidden');
+            contactContent.classList.add('hidden');
+            homeContent.classList.remove('hidden');
+        });
+
+        
+        const sidebar = document.getElementById('sidebar');
+        const hamburger = document.getElementById('hamburger');
+        const mainContent = document.getElementById('mainContent');
+
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            mainContent.classList.toggle('collapsed');
+        });
+    </script>
+</body>
+</html>
